@@ -36,7 +36,7 @@ public class OrdenaStringL {
         }
 
         }).start();
-        
+
  thread com lambda
 new Thread(() -> System.out.println("Executando um Runnable")).start();
 */
