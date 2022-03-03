@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 
+// Ex: Function<Usuario, String> funcao = u -> u.getNome() == Usuario::getNome
 public class OrdenaStringMR {
     public static void main(String[] args) {
         List<String> palavras = new ArrayList<String>();
