@@ -1,10 +1,10 @@
 package Streams;
 
-import org.w3c.dom.ls.LSOutput;
-
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class CursosMain {
 
@@ -15,36 +15,35 @@ public class CursosMain {
             cursos.add(new Curso("Java 8", 113));
             cursos.add(new Curso("C", 55));
 
-
-            cursos.sort(Comparator.comparing(Curso::getAlunos)); // ordena por numero de alunos
-            // cursos.forEach(c->System.out.println(c.getNome()));
-
-            // filtrar coleções
-
-            // FILTRA OS CURSOS COM MAIS DE 100 ALUNOS E PRINTA O NOME DELES
+            // devolve um dos cursos com mais de 100 alunos
             cursos.stream() // stream devolve corrente de objetos
-                    .filter(c -> c.getAlunos()>=100) // filter vai voltar true e guardar so aqueles cursos que tem mais de 100 alunos
-                    .forEach(c->System.out.println(c.getNome())); // printa os cursos que tem mais de 100 alunos
+                   .filter(c -> c.getAlunos()>=100) // filter retorna true or false e guardar so aqueles cursos que tem mais de 100 alunos (retornaram true)
+                   .findAny() // devolve um dos cursos com mais de 100 alunos
+                   .ifPresent(c -> System.out.println(c.getNome()));  // vai devolver o curso ou se não achar, devolve vazio
 
-            System.out.println("---------------------");
+            // se eu fizer outro cursos.stream() aqui, ele perde o resultado desse filtro de cima, logo se eu quiser guardar
+            // o resultado acima para futuras necessidades, eu necessito fazer o codigo abaixo
+           cursos = cursos.stream()
+                    .filter(c -> c.getAlunos()>=100)
+                    .collect(Collectors.toList());
 
-            // FILTRA OS CURSOS COM MAIS DE 100 ALUNOS, MAPEIA QUANTOS ALUNOS TEM EM CADA CURSO E PRINTA A QUANTIDADE DE ALUNOS DE CADA CURSO
-            // FOREACH VAI RECEBER O RESULTADO DE MAP
-            cursos.stream() // stream devolve corrente de objetos
-                    .filter(c -> c.getAlunos()>=100) // filter retorna true or false e guardar so aqueles cursos que tem mais de 100 alunos (retornaram true)
-                    .map(c ->c.getAlunos()) // dado o curso com mais de 100 alunos, eu quero o numero de alunos de cada curso
-                    .forEach(total -> System.out.println(total));
+            cursos.stream().forEach(c-> System.out.println(c.getNome()));
 
-            System.out.println("---------------------");
+            // outra forma
 
-            // RETORNA A SOMA DOS ALUNOS QUE ESTÃO MATRICULADOS EM CURSO COM MAIS DE 100 ALUNOS
-            // tem que usar mapToInt pra usar o sum()
-            int soma = cursos.stream() // stream devolve corrente de objetos
-                    .filter(c -> c.getAlunos()>=100) // filter retorna true or false e guardar so aqueles cursos que tem mais de 100 alunos (retornaram true)
-                    .mapToInt(c ->c.getAlunos()) // dado o curso com mais de 100 alunos, eu quero o numero de alunos de cada curso
-                    .sum();
+                 cursos.stream()
+                    .filter(c -> c.getAlunos()>=100)
+                    .collect(Collectors.toMap(c -> c.getNome(), c -> c.getAlunos())) // dado curso com mais de 100 alunos, guarda a chave do mapa que é o nome
+            // e é mapeado (guardado) pelo numero de alunos
+                    .forEach((nome,alunos) -> System.out.println(nome + " tem " + alunos + " alunos"));
+//            JavaScript tem 150 alunos
+//            Java 8 tem 113 alunos
 
-            System.out.println(soma);
+            System.out.println(cursos.stream()
+                    .filter(c -> c.getAlunos()>=100)
+                    .collect(Collectors.toMap(c -> c.getNome(), c -> c.getAlunos()))); // {JavaScript=150, Java 8=113}
+
+
 
         }
 }
