@@ -15,17 +15,17 @@ public class CursosMain {
             cursos.add(new Curso("Java 8", 113));
             cursos.add(new Curso("C", 55));
 
-            // devolve um dos cursos com mais de 100 alunos
+            // devolve qualquer um dos cursos com mais de 100 alunos
             cursos.stream() // stream devolve corrente de objetos
                    .filter(c -> c.getAlunos()>=100) // filter retorna true or false e guardar so aqueles cursos que tem mais de 100 alunos (retornaram true)
-                   .findAny() // devolve um dos cursos com mais de 100 alunos
+                   .findAny() // devolve qualquer um dos cursos com mais de 100 alunos
                    .ifPresent(c -> System.out.println(c.getNome()));  // vai devolver o curso ou se não achar, devolve vazio
 
             // se eu fizer outro cursos.stream() aqui, ele perde o resultado desse filtro de cima, logo se eu quiser guardar
             // o resultado acima para futuras necessidades, eu necessito fazer o codigo abaixo
            cursos = cursos.stream()
                     .filter(c -> c.getAlunos()>=100)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()); // transforma em lista
 
             cursos.stream().forEach(c-> System.out.println(c.getNome()));
 
